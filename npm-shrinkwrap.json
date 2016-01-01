@@ -2,6 +2,11 @@
   "name": "containership.plugin.auto-upgrade",
   "version": "0.0.0",
   "dependencies": {
+    "async": {
+      "version": "1.5.0",
+      "from": "async@",
+      "resolved": "https://registry.npmjs.org/async/-/async-1.5.0.tgz"
+    },
     "containership.plugin": {
       "version": "0.3.0",
       "from": "containership.plugin@^0.3.0"

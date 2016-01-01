@@ -1,6 +1,7 @@
 var _ = require("lodash");
 var scheduler = require([__dirname, "lib", "scheduler"].join("/"));
 var ContainershipPlugin = require("containership.plugin");
+var async = require("async");
 
 module.exports = new ContainershipPlugin({
     type: "core",
@@ -25,20 +26,37 @@ module.exports = new ContainershipPlugin({
             }
         }
 
-        cloud.get_schedule(function(err, schedule){
-            if(err)
-                schedule = self.get_config();
+        var set_schedule = function(fn){
+            cloud.get_schedule(function(err, schedule){
+                if(err)
+                    schedule = self.get_config();
 
-            var options = _.defaults(schedule, defaults);
+                if(_.isEmpty(schedule))
+                    return fn(new Error("No schedule detected!"));
 
-            var attributes = core.cluster.legiond.get_attributes();
+                var options = _.defaults(schedule, defaults);
 
-            if(_.has(attributes, "metadata") && _.has(attributes.metadata, "containership"))
-                options.version = attributes.metadata.containership.version;
+                var attributes = core.cluster.legiond.get_attributes();
 
-            scheduler.create_job(options.schedule, function(){
-                upgrade.attempt(options);
+                if(_.has(attributes, "metadata") && _.has(attributes.metadata, "containership"))
+                    options.version = attributes.metadata.containership.version;
+
+                scheduler.create_job(options.schedule, function(){
+                    upgrade.attempt(options);
+                });
             });
+        }
+
+        set_schedule(function(err){
+            if(err){
+                async.forever(function(fn){
+                    setTimeout(function(){
+                        set_schedule(function(err){
+                            return fn();
+                        });
+                    }, (60 * 1000));
+                }, function(err){});
+            }
         });
     },
 
