@@ -1,0 +1,33 @@
+{
+  "name": "containership.plugin.auto-upgrade",
+  "version": "0.0.0",
+  "description": "A ContainerShip plugin to automatically upgrade your ContainerShip agent",
+  "main": "application.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ContainerShip Developers <developers@containership.io>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "containership.plugin": "^0.3.0",
+    "lodash": "^3.3.1",
+    "node-schedule": "^0.2.9",
+    "npm": "^2.14.2",
+    "request": "^2.65.0",
+    "semver": "^5.0.1"
+  },
+  "keywords": [
+    "containership",
+    "update",
+    "upgrade",
+    "verion"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/containership/containership.plugin.auto-upgrade.git"
+  },
+  "bugs": {
+    "url": "https://github.com/containership/containership.plugin.auto-upgrade/issues"
+  },
+  "homepage": "https://github.com/containership/containership.plugin.auto-upgrade"
+}
