@@ -20,12 +20,14 @@ module.exports = new ContainershipPlugin({
                 minute: 0,
                 dayOfWeek: 0
             },
-            max_splay: (5 * 60 * 1000)
+            max_splay: function(){
+                return (core.cluster.legiond.get_peers().length + 1) * (60 * 1000);
+            }
         }
 
         cloud.get_schedule(function(err, schedule){
             if(err)
-                schedule = self.config;
+                schedule = self.get_config();
 
             var options = _.defaults(schedule, defaults);
 
